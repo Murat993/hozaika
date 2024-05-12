@@ -2,83 +2,54 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
     /**
-     * A list of exception types with their corresponding custom log levels.
+     * A list of the exception types that are not reported.
      *
-     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
+     * @var array
      */
-    protected $levels = [
+    protected $dontReport = [
         //
     ];
 
     /**
-     * A list of the exception types that are not reported.
+     * A list of the inputs that are never flashed for validation exceptions.
      *
-     * @var array<int, class-string<\Throwable>>
-     */
-    protected $dontReport = [
-        AuthorizationException::class,
-        HttpException::class,
-        ModelNotFoundException::class,
-        ValidationException::class
-    ];
-
-
-    /**
-     * A list of the inputs that are never flashed to the session on validation exceptions.
-     *
-     * @var array<int, string>
+     * @var array
      */
     protected $dontFlash = [
-        'current_password',
         'password',
         'password_confirmation',
     ];
 
-
     /**
-     * Register the exception handling callbacks for the application.
+     * Report or log an exception.
      *
+     * @param  \Throwable  $exception
      * @return void
+     *
+     * @throws \Throwable
      */
-    public function register()
+    public function report(Throwable $exception)
     {
-        $this->renderable(function (ValidationException $e) {
-            return new JsonResponse([
-                'error' => array_map(fn($val) => $val[0], $e->errors())
-            ], 422);
-        });
-
-        $this->renderable(function (NotFoundHttpException $e) {
-            return $this->getNotFoundResponse();
-        });
-
-        $this->renderable(function (MethodNotAllowedHttpException $e) {
-            return $this->getNotFoundResponse();
-        });
-
-        $this->renderable(function (ModelNotFoundException $e) {
-            return $this->getNotFoundResponse();
-        });
-
-        $this->renderable(function (AuthenticationException $e) {
-            return new JsonResponse(['error' => $e->getMessage()], 401);
-        });
+        parent::report($exception);
     }
 
-    private function getNotFoundResponse(): JsonResponse
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Throwable
+     */
+    public function render($request, Throwable $exception)
     {
-        return new JsonResponse(['error' => 'Not found'], 404);
+        return parent::render($request, $exception);
     }
 }

@@ -22,8 +22,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Auth::extend('telegram-service-token', function ($app) {
-            return new TelegramServiceTokenGuard($app->make('request'));
-        });
+        $this->registerPolicies();
     }
 }

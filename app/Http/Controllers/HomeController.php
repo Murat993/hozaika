@@ -12,14 +12,13 @@ class HomeController extends Controller
 
     public function index()
     {
-        $domainName = 'https://'.Request::getHttpHost() . '/api';
+        \App\Models\User::create([
+            'name' => 'admin',
+            'email' => 'admin@mail.ru',
+            'password' => bcrypt('123123'),
+        ]);
+        var_dump('asdasd0');die();
 
         return view('welcome', compact('domainName'));
     }
-
-    public function test(\Illuminate\Http\Request $request)
-    {
-        return $request->post('');
-    }
-
 }

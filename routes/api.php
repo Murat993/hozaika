@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['as' => 'api', 'middleware' => 'auth:service-api'], function () {
-    Route::post('/me', [\App\Http\Controllers\UserController::class, 'me']);
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
 });
