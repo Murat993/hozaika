@@ -36,6 +36,13 @@
                             <a class="btn btn-sm btn-primary" href="{{route('admin.users.edit', $item->id)}}">
                                 Редактировать</a>
                         </td>
+                        <td>
+                            <form style="display:inline;" method="POST" action="{{ route('admin.users.destroy', $item->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger">Удалить</button>
+                            </form>
+                        </td>
                     </tr>
                     </tr>
                 @endforeach

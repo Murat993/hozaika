@@ -34,8 +34,7 @@
                     @endif
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <div class="row">
-                            <label for="name" class="col-md-4 control-label">Название</label>
-
+                            <label for="name" class="col-md-4 control-label">Имя пользователя</label>
                             <div class="col-md-6">
                                 <input type="text" id="name" name="name" value="{{$model->name ?? old('name')}}"
                                        class="form-control">
@@ -48,9 +47,34 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <div class="row">
-                            <label for="service_id" class="col-md-4 control-label">Статус</label>
+                            <label for="name" class="col-md-4 control-label">Емейл</label>
+                            <div class="col-md-6">
+                                <input type="text" id="email" name="email" value="{{$model->email ?? old('email')}}"
+                                       class="form-control">
+
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div class="row">
+                            <label for="name" class="col-md-4 control-label">Пароль</label>
+                            <div class="col-md-6">
+                                <input type="text" id="password" name="password" value="{{$model->password ?? old('password')}}"
+                                       class="form-control">
+
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                     @if($model->exists)

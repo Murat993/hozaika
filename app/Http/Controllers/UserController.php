@@ -31,7 +31,8 @@ class UserController extends Controller
     {
         User::create([
             'name' => $request['name'],
-            'status' => $request['status'],
+            'email' => $request['email'],
+            'password' => $request['password'],
         ]);
 
         return redirect(route('admin.users.index'));
@@ -49,7 +50,8 @@ class UserController extends Controller
 
         $model->update([
             'name' => $request['name'],
-            'status' => $request['status'],
+            'email' => $request['email'],
+            'password' => $request['password'],
         ]);
 
         return redirect(route('admin.users.index'));
