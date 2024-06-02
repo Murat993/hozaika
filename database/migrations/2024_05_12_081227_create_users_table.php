@@ -23,7 +23,7 @@ return new class extends Migration
 
         \App\Models\User::create([
             'name' => 'admin',
-            'email' => 'admin@mail.ru',
+            'email' => 'admin@damin.com',
             'password' => bcrypt('123123'),
         ]);
     }
