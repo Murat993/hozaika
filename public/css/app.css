@@ -5691,7 +5691,7 @@ a.badge-dark.focus {
 
 .progress {
   display: flex;
-  height: 1rem;
+  height: 2rem;
   overflow: hidden;
   line-height: 0;
   font-size: 0.675rem;
@@ -10796,19 +10796,18 @@ a.text-dark:focus {
 }
 
 .text-muted {
-  color: #6c757d !important;
+  color: #6c757d;
 }
 
 .text-black-50 {
-  color: rgba(0, 0, 0, 0.5) !important;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .text-white-50 {
-  color: rgba(255, 255, 255, 0.5) !important;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .text-hide {
-  font: 0/0 a;
   color: transparent;
   text-shadow: none;
   background-color: transparent;
@@ -10937,3 +10936,68 @@ a.text-dark:focus {
     display: none;
 }
 
+.container-loyalty {
+    background-color: #f8f9fa;
+    padding: 20px;
+    padding-top: 0;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: auto;
+    border: 1px solid #cecece;
+}
+.progress-bar-custom {
+    background-color: #28a745;
+}
+.task-list {
+    list-style-type: none;
+    padding: 0;
+}
+.task-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.task-list i {
+    margin-right: 10px;
+}
+.task-pending {
+    font-weight: bold;
+    font-size: 13px;
+    color: #6c757d;
+}
+.task-pending i {
+    color: #6c757d;
+}
+.task-completed {
+    font-weight: bold;
+    font-size: 13px;
+    color: #28a745;
+}
+
+.loyalty-text-font-size {
+    font-weight: bold;
+    font-size: 13px
+}
+
+.value-log-column {
+    width: 150px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10px;
+}
+
+@media (max-width: 576px) {
+    .container-loyalty {
+        padding: 15px;
+        max-width: 100%;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    h3 {
+        font-size: 1.25rem;
+    }
+    h5, h6 {
+        font-size: 1rem;
+    }
+}

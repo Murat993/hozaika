@@ -24,7 +24,7 @@
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/admin/users') }}">
+            <a class="navbar-brand" href="{{ url('/') }}">
                 {{ config('app.name', 'Hozaika') }}
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -35,21 +35,20 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
                     @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.users.index')}}">Пользователи</a>
-                        </li>
-{{--                        <li class="nav-item">--}}
-{{--                            <a class="nav-link" href="">Транспорты</a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item dropdown">--}}
-{{--                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>Свойства</a>--}}
+                        @if (Auth::user()->hasRole(\App\Models\User::ROLE_ADMIN) || Auth::user()->hasRole('manager'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.managers.index') }}">Менеджеры</a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->hasRole(\App\Models\User::ROLE_ADMIN) || Auth::user()->hasRole('manager'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.users.index') }}">Пользователи</a>
 
-{{--                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">--}}
-{{--                                <a class="dropdown-item" href="">Услуги</a>--}}
-{{--                                <a class="dropdown-item" href="">Категории</a>--}}
-{{--                                <a class="dropdown-item" href="">Типы</a>--}}
-{{--                            </div>--}}
-{{--                        </li>--}}
+                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.logs.index') }}">Логи</a>
+                                </li>
+                        @endif
                     @endauth
                 </ul>
 
@@ -58,19 +57,19 @@
                     <!-- Authentication Links -->
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Войти') }}</a>
                         </li>
                     @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }}
+                                {{ Auth::user()->getFullName() }}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    {{ __('Выйти') }}
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

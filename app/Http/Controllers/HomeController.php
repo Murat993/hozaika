@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 
 
-use Illuminate\Support\Facades\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 
 class HomeController extends Controller
@@ -12,13 +13,16 @@ class HomeController extends Controller
 
     public function index()
     {
-        \App\Models\User::create([
-            'name' => 'admin',
-            'email' => 'admin@mail.ru',
-            'password' => bcrypt('123123'),
-        ]);
-        var_dump('asdasd0');die();
+        $user = Auth::user();
 
-        return view('welcome', compact('domainName'));
+        if ($user->hasRole(User::ROLE_ADMIN)) {
+            return redirect()->route('admin.users.index');
+        } elseif ($user->hasRole(User::ROLE_MANAGER)) {
+            return view('manager.dashboard');
+        } elseif ($user->hasRole(User::ROLE_USER)) {
+            return redirect()->route('user.loyalty');
+        }
+
+        return redirect('/login');
     }
 }

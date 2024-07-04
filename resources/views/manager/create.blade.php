@@ -6,15 +6,15 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h3 class="m-0 text-dark">Создание/Редактирование пользователя</h3>
+                        <h3 class="m-0 text-dark">Создание/Редактирование менеджера</h3>
                     </div>
                 </div>
             </div>
         </div>
         <div class="card card-default">
             <div class="card-body">
-                <form name="users-create-edit"
-                      action="@if($model->exists){{route('admin.users.update', $model->id)}}@else{{route('admin.users.store')}}@endif"
+                <form name="managers-create-edit"
+                      action="@if($model->exists){{route('admin.managers.update', $model->id)}}@else{{route('admin.managers.store')}}@endif"
                       enctype="multipart/form-data"
                       method="post">
                     @if($model->exists)
@@ -34,7 +34,7 @@
                     @endif
                     <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
                         <div class="row">
-                            <label for="firstname" class="col-md-4 control-label">Имя пользователя</label>
+                            <label for="firstname" class="col-md-4 control-label">Имя менеджера</label>
                             <div class="col-md-6">
                                 <input type="text" id="firstname" name="firstname" value="{{$model->firstname ?? old('firstname')}}"
                                        class="form-control">
@@ -47,24 +47,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
-                        <div class="row">
-                            <label for="lastname" class="col-md-4 control-label">Фамилия пользователя</label>
-                            <div class="col-md-6">
-                                <input type="text" id="lastname" name="lastname" value="{{$model->lastname ?? old('lastname')}}"
-                                       class="form-control">
+                        <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
+                            <div class="row">
+                                <label for="lastname" class="col-md-4 control-label">Фамилия менеджера</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="lastname" name="lastname" value="{{$modellastnamename ?? old('lastname')}}"
+                                           class="form-control">
 
-                                @if ($errors->has('lastname'))
-                                    <span class="help-block">
+                                    @if ($errors->has('lastname'))
+                                        <span class="help-block">
                                     <strong>{{ $errors->first('lastname') }}</strong>
                                 </span>
-                                @endif
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <div class="row">
-                            <label for="email" class="col-md-4 control-label">Емейл</label>
+                            <label for="name" class="col-md-4 control-label">Емейл</label>
                             <div class="col-md-6">
                                 <input type="text" id="email" name="email" value="{{$model->email ?? old('email')}}"
                                        class="form-control">
@@ -79,7 +79,7 @@
                     </div>
                     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                         <div class="row">
-                            <label for="password" class="col-md-4 control-label">Пароль</label>
+                            <label for="name" class="col-md-4 control-label">Пароль</label>
                             <div class="col-md-6">
                                 <input type="text" id="password" name="password"
                                        class="form-control">
@@ -102,3 +102,4 @@
         </div>
     </div>
 @endsection
+

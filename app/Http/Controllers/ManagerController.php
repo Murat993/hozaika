@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\ManagerRequest;
 use App\Models\User;
 use App\Models\UserLog;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ManagerController extends Controller
 {
     public function __construct()
     {
@@ -17,43 +17,43 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $models = User::whereJsonContains('roles', User::ROLE_USER)->paginate(30);
-        return view('user.index', compact('models'));
+        $models = User::whereJsonContains('roles', User::ROLE_MANAGER)->paginate(30);
+        return view('manager.index', compact('models'));
     }
 
     public function create()
     {
         $model = new User();
-        return view('user.create', compact('model'));
+        return view('manager.create', compact('model'));
     }
 
-    public function store(UserRequest $request)
+    public function store(ManagerRequest $request)
     {
         $data = $request->only(['firstname', 'lastname', 'email']);
         if ($request->filled('password')) {
             $data['password'] = bcrypt($request['password']);
         }
-        $data['roles'] = [User::ROLE_USER];
+        $data['roles'] = [User::ROLE_MANAGER];
 
         User::create($data);
 
         UserLog::create([
             'user_id' => auth()->id(),
-            'description' => 'Создан пользователь',
-            'event' => UserLog::EVENT_USER_CREATE,
+            'description' => 'Создан менеджер',
+            'event' => UserLog::EVENT_MANAGER_CREATE,
             'new_value' => $data,
         ]);
 
-        return redirect(route('admin.users.index'));
+        return redirect(route('admin.managers.index'));
     }
 
     public function edit($id)
     {
         $model = User::findOrFail($id);
-        return view('user.create', compact('model'));
+        return view('manager.create', compact('model'));
     }
 
-    public function update(UserRequest $request, $id)
+    public function update(ManagerRequest $request, $id)
     {
         $model = User::findOrFail($id);
         $oldValue = $model->toArray();
@@ -67,13 +67,13 @@ class UserController extends Controller
 
         UserLog::create([
             'user_id' => auth()->id(),
-            'description' => 'Обновлен пользователь',
-            'event' => UserLog::EVENT_USER_UPDATE,
+            'description' => 'Создан менеджер',
+            'event' => UserLog::EVENT_MANAGER_UPDATE,
             'old_value' => $oldValue,
             'new_value' => $data,
         ]);
 
-        return redirect(route('admin.users.index'));
+        return redirect(route('admin.managers.index'));
     }
 
     public function destroy($id)
@@ -84,11 +84,11 @@ class UserController extends Controller
 
         UserLog::create([
             'user_id' => auth()->id(),
-            'description' => 'Удален пользователь',
-            'event' => UserLog::EVENT_USER_DELETE,
+            'description' => 'Удален менеджер',
+            'event' => UserLog::EVENT_MANAGER_DELETE,
             'old_value' => $oldValue,
         ]);
 
-        return redirect(route('admin.users.index'));
+        return redirect(route('admin.managers.index'));
     }
 }

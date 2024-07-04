@@ -12,12 +12,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h3 class="m-0 text-dark">Пользователи</h3>
+                    <h3 class="m-0 text-dark">Менеджеры</h3>
                 </div>
             </div>
         </div>
     </div>
-    <a class="btn btn-primary" href="{{route('admin.users.create')}}">Добавить</a>
+    <a class="btn btn-primary" href="{{route('admin.managers.create')}}">Добавить</a>
     <div class="card card-default">
         <div class="card-body">
             <table class="table">
@@ -33,11 +33,11 @@
                         <td>{{$item->getFullName()}}</td>
                         <td>{{$item->email}}</td>
                         <td>
-                            <a class="btn btn-sm btn-primary" href="{{route('admin.users.edit', $item->id)}}">
+                            <a class="btn btn-sm btn-primary" href="{{route('admin.managers.edit', $item->id)}}">
                                 Редактировать</a>
                         </td>
                         <td>
-                            <form style="display:inline;" method="POST" action="{{ route('admin.users.destroy', $item->id) }}">
+                            <form style="display:inline;" method="POST" action="{{ route('admin.managers.destroy', $item->id) }}">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger">Удалить</button>
