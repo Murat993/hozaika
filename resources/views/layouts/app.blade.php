@@ -35,18 +35,23 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
                     @auth
-                        @if (Auth::user()->hasRole(\App\Models\User::ROLE_ADMIN) || Auth::user()->hasRole('manager'))
+                        @if (Auth::user()->isAdmin() || Auth::user()->isManager())
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.managers.index') }}">Менеджеры</a>
+                                <a class="nav-link" href="{{ route('users.index') }}">Пользователи</a>
                             </li>
                         @endif
-                        @if (Auth::user()->hasRole(\App\Models\User::ROLE_ADMIN) || Auth::user()->hasRole('manager'))
+                        @if (Auth::user()->isAdmin())
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.users.index') }}">Пользователи</a>
-
+                                <a class="nav-link" href="{{ route('managers.index') }}">Менеджеры</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('logs.index') }}">Логи</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('levels.index') }}">Уровень</a>
                             </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.logs.index') }}">Логи</a>
+                                    <a class="nav-link" href="{{ route('tasks.index') }}">Задачи</a>
                                 </li>
                         @endif
                     @endauth

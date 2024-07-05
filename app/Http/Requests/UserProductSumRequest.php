@@ -4,7 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ManagerRequest extends FormRequest
+/**
+ * @property float amount
+ * @property string $link
+ * @property string|null $comment
+ */
+class UserProductSumRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +29,9 @@ class ManagerRequest extends FormRequest
     public function rules()
     {
         return [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'email' => 'required|email',
-            'password' => 'nullable',
+            'amount' => 'required|numeric',
+            'link' => 'required|url',
+            'comment' => 'nullable|string',
         ];
     }
 }

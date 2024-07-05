@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
@@ -17,10 +20,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read int|null $notifications_count
  * @property-read array $roles
+ * @property-read int $level_id
+ * @property-read string $gender
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
+ * @property-read Collection|CompletedUserTask[] $completedUserTasks
+ * @property-read Collection|UserProductSum[] $productsSum
+ * @property-read Level $level
  */
 class User extends Authenticatable
 {
@@ -34,7 +42,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'email', 'password', 'firstname','lastname','roles',
+        'email', 'password', 'firstname','lastname','roles', 'level_id',
     ];
 
     /**
@@ -56,9 +64,19 @@ class User extends Authenticatable
         'roles' => 'array',
     ];
 
-    protected static function boot(): void
+    public function productsSum(): HasMany
     {
-        parent::boot();
+        return $this->hasMany(UserProductSum::class, 'user_id', 'id');
+    }
+
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(Level::class);
+    }
+
+    public function completedUserTasks(): HasMany
+    {
+        return $this->hasMany(CompletedUserTask::class);
     }
 
     public function hasRole($role): bool
@@ -94,5 +112,42 @@ class User extends Authenticatable
     public function getFullName()
     {
         return ucfirst($this->firstname) . ' ' . ucfirst($this->lastname);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(self::ROLE_ADMIN);
+    }
+
+    public function isManager(): bool
+    {
+        return $this->hasRole(self::ROLE_MANAGER);
+    }
+
+    public function isUser(): bool
+    {
+        return $this->hasRole(self::ROLE_USER);
+    }
+
+    public function checkTasksCompletion(): bool
+    {
+        $tasks = $this->level->tasks;
+        foreach ($tasks as $task) {
+            if (!$this->completedUserTasks()->where('task_id', $task->id)->exists()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function promoteToNextLevel(): void
+    {
+        if ($this->checkTasksCompletion()) {
+            $nextLevel = Level::where('id', '>', $this->level_id)->orderBy('id')->first();
+            if ($nextLevel) {
+                $this->level_id = $nextLevel->id;
+                $this->save();
+            }
+        }
     }
 }

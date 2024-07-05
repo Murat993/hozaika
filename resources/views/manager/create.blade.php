@@ -14,7 +14,7 @@
         <div class="card card-default">
             <div class="card-body">
                 <form name="managers-create-edit"
-                      action="@if($model->exists){{route('admin.managers.update', $model->id)}}@else{{route('admin.managers.store')}}@endif"
+                      action="@if($model->exists){{route('managers.update', $model->id)}}@else{{route('managers.store')}}@endif"
                       enctype="multipart/form-data"
                       method="post">
                     @if($model->exists)

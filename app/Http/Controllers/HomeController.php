@@ -15,11 +15,9 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->hasRole(User::ROLE_ADMIN)) {
-            return redirect()->route('admin.users.index');
-        } elseif ($user->hasRole(User::ROLE_MANAGER)) {
-            return view('manager.dashboard');
-        } elseif ($user->hasRole(User::ROLE_USER)) {
+        if ($user->isAdmin() || $user->isManager()) {
+            return redirect()->route('users.index');
+        }  elseif ($user->isUser()) {
             return redirect()->route('user.loyalty');
         }
 

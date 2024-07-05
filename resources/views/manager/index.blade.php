@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>
-    <a class="btn btn-primary" href="{{route('admin.managers.create')}}">Добавить</a>
+    <a class="btn btn-primary" href="{{route('managers.create')}}">Добавить</a>
     <div class="card card-default">
         <div class="card-body">
             <table class="table">
@@ -33,11 +33,11 @@
                         <td>{{$item->getFullName()}}</td>
                         <td>{{$item->email}}</td>
                         <td>
-                            <a class="btn btn-sm btn-primary" href="{{route('admin.managers.edit', $item->id)}}">
+                            <a class="btn btn-sm btn-primary" href="{{route('managers.edit', $item->id)}}">
                                 Редактировать</a>
                         </td>
                         <td>
-                            <form style="display:inline;" method="POST" action="{{ route('admin.managers.destroy', $item->id) }}">
+                            <form style="display:inline;" method="POST" action="{{ route('managers.destroy', $item->id) }}">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger">Удалить</button>
@@ -49,11 +49,8 @@
                 </tbody>
             </table>
         </div>
-    </div>
-
-    <div class="col-md-10">
-        <div class="form-group">
-            {{ $models->links() }}
+        <div class="d-flex justify-content-center">
+            {{ $models->links('vendor.pagination.custom') }}
         </div>
     </div>
 </div>

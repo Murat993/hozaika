@@ -14,7 +14,7 @@
         <div class="card card-default">
             <div class="card-body">
                 <form name="users-create-edit"
-                      action="@if($model->exists){{route('admin.users.update', $model->id)}}@else{{route('admin.users.store')}}@endif"
+                      action="@if($model->exists){{route('users.update', $model->id)}}@else{{route('users.store')}}@endif"
                       enctype="multipart/form-data"
                       method="post">
                     @if($model->exists)

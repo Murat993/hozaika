@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <form method="GET" action="{{ route('admin.logs.index') }}" class="mb-3">
+        <form method="GET" action="{{ route('logs.index') }}" class="mb-3">
             <div class="form-row">
                 <div class="col-md-4">
                     <select name="manager_id" class="form-control">
@@ -61,11 +61,8 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <div class="col-md-10">
-            <div class="form-group">
-                {{ $logs->links() }}
+            <div class="d-flex justify-content-center">
+                {{ $logs->links('vendor.pagination.custom') }}
             </div>
         </div>
     </div>

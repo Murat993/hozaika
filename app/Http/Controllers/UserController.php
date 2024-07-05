@@ -10,11 +10,6 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index(Request $request)
     {
         $models = User::whereJsonContains('roles', User::ROLE_USER)->paginate(30);
@@ -44,7 +39,7 @@ class UserController extends Controller
             'new_value' => $data,
         ]);
 
-        return redirect(route('admin.users.index'));
+        return redirect(route('users.index'));
     }
 
     public function edit($id)
@@ -73,7 +68,7 @@ class UserController extends Controller
             'new_value' => $data,
         ]);
 
-        return redirect(route('admin.users.index'));
+        return redirect(route('users.index'));
     }
 
     public function destroy($id)
@@ -89,6 +84,6 @@ class UserController extends Controller
             'old_value' => $oldValue,
         ]);
 
-        return redirect(route('admin.users.index'));
+        return redirect(route('users.index'));
     }
 }
