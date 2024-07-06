@@ -6,10 +6,15 @@ use App\Models\CompletedUserTask;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\UserLog;
+use App\Services\UserLogService;
 use Illuminate\Http\Request;
 
 class UserTaskController extends Controller
 {
+    public function __construct(private readonly UserLogService $userLogService)
+    {
+    }
+
     public function index(User $user)
     {
         $levelTasks = $user->level->tasks;
@@ -26,12 +31,11 @@ class UserTaskController extends Controller
             'task_id' => $task->id,
         ]);
 
-        UserLog::create([
-            'user_id' => auth()->id(),
-            'description' => 'Выполнена задача у пользователя ' . $user->getFullName(),
-            'event' => UserLog::EVENT_COMPLETE_TASK,
-            'new_value' => $completeUserTask->toArray(),
-        ]);
+        $this->userLogService->create(
+            'Выполнена задача у пользователя ' . $user->getFullName(),
+            UserLog::EVENT_COMPLETE_TASK,
+            $completeUserTask->toArray()
+        );
 
         $user->promoteToNextLevel();
 

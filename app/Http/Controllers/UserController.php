@@ -7,10 +7,15 @@ use App\Http\Requests\UserRequest;
 use App\Models\Level;
 use App\Models\User;
 use App\Models\UserLog;
+use App\Services\UserLogService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function __construct(private readonly UserLogService $userLogService)
+    {
+    }
+
     public function index(Request $request)
     {
         $models = User::whereJsonContains('roles', User::ROLE_USER)->paginate(30);
@@ -35,12 +40,7 @@ class UserController extends Controller
 
         User::create($data);
 
-        UserLog::create([
-            'user_id' => auth()->id(),
-            'description' => 'Создан пользователь',
-            'event' => UserLog::EVENT_USER_CREATE,
-            'new_value' => $data,
-        ]);
+        $this->userLogService->create('Создан пользователь', UserLog::EVENT_USER_CREATE, $data);
 
         return redirect(route('users.index'));
     }
@@ -64,13 +64,7 @@ class UserController extends Controller
 
         $model->update($data);
 
-        UserLog::create([
-            'user_id' => auth()->id(),
-            'description' => 'Обновлен пользователь',
-            'event' => UserLog::EVENT_USER_UPDATE,
-            'old_value' => $oldValue,
-            'new_value' => $data,
-        ]);
+        $this->userLogService->create('Обновлен пользователь', UserLog::EVENT_USER_UPDATE, $data, $oldValue);
 
         return redirect(route('users.index'));
     }
@@ -81,12 +75,7 @@ class UserController extends Controller
         $oldValue = $model->toArray();
         $model->delete();
 
-        UserLog::create([
-            'user_id' => auth()->id(),
-            'description' => 'Удален пользователь',
-            'event' => UserLog::EVENT_USER_DELETE,
-            'old_value' => $oldValue,
-        ]);
+        $this->userLogService->create('Удален пользователь', UserLog::EVENT_USER_DELETE, null, $oldValue);
 
         return redirect(route('users.index'));
     }

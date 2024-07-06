@@ -2,11 +2,21 @@
 
 namespace App\Exceptions;
 
+use App\Services\TelegramLogger;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    protected TelegramLogger $telegramLogger;
+
+    public function __construct(Container $container, TelegramLogger $telegramLogger)
+    {
+        parent::__construct($container);
+        $this->telegramLogger = $telegramLogger;
+    }
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -37,6 +47,10 @@ class Handler extends ExceptionHandler
     public function report(Throwable $exception)
     {
         parent::report($exception);
+
+        if ($this->shouldReport($exception)) {
+            $this->telegramLogger->logError($exception);
+        }
     }
 
     /**

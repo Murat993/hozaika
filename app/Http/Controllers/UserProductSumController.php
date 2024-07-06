@@ -7,10 +7,15 @@ use App\Models\CompletedUserTask;
 use App\Models\User;
 use App\Models\UserLog;
 use App\Models\UserProductSum;
+use App\Services\UserLogService;
 use Illuminate\Http\Request;
 
 class UserProductSumController extends Controller
 {
+    public function __construct(private readonly UserLogService $userLogService)
+    {
+    }
+
     public function index(User $user)
     {
         $products = $user->productsSum()->paginate(30);
@@ -26,12 +31,11 @@ class UserProductSumController extends Controller
             'comment' => $request->comment,
         ]);
 
-        UserLog::create([
-            'user_id' => auth()->id(),
-            'description' => 'Добавлен новый товар для пользователя ' . $user->getFullName(),
-            'event' => UserLog::EVENT_ADD_PRODUCT_SUM,
-            'new_value' => $product->toArray(),
-        ]);
+        $this->userLogService->create(
+            'Добавлен новый товар для пользователя ' . $user->getFullName(),
+            UserLog::EVENT_ADD_PRODUCT_SUM,
+            $product->toArray()
+        );
 
         $purchaseAmount = $user->level->tasks()->sum('purchase_amount');
         $amount = $user->productsSum()->sum('amount');
