@@ -77,6 +77,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
+                        <div class="row">
+                            <label for="gender" class="col-md-4 control-label">Пол</label>
+                            <div class="col-md-6">
+                                <select id="gender" name="gender" class="form-control">
+                                    @foreach($genders as $key => $value)
+                                        <option value="{{ $key }}" {{ ($model->gender ?? old('gender')) == $key ? 'selected' : '' }}>
+                                            {{ $value }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @if ($errors->has('gender'))
+                                    <span class="help-block">
+                                <strong>{{ $errors->first('gender') }}</strong>
+                            </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                         <div class="row">
                             <label for="password" class="col-md-4 control-label">Пароль</label>

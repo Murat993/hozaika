@@ -23,11 +23,20 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+        $userId = $this->route('user');
+
         return [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'email' => 'required|email',
-            'password' => 'nullable',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $userId,
+            'password' => 'nullable|string|min:6',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.unique' => 'Этот email уже используется.',
         ];
     }
 }

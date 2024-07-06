@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\UserRequest;
+use App\Models\Level;
 use App\Models\User;
 use App\Models\UserLog;
 use Illuminate\Http\Request;
@@ -19,16 +20,18 @@ class UserController extends Controller
     public function create()
     {
         $model = new User();
-        return view('user.create', compact('model'));
+        $genders = User::GENDERS;
+        return view('user.create', compact('model', 'genders'));
     }
 
     public function store(UserRequest $request)
     {
-        $data = $request->only(['firstname', 'lastname', 'email']);
+        $data = $request->only(['firstname', 'lastname', 'email', 'gender']);
         if ($request->filled('password')) {
             $data['password'] = bcrypt($request['password']);
         }
         $data['roles'] = [User::ROLE_USER];
+        $data['level_id'] = Level::orderBy('id')->first()->id;
 
         User::create($data);
 
@@ -45,7 +48,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $model = User::findOrFail($id);
-        return view('user.create', compact('model'));
+        $genders = User::GENDERS;
+        return view('user.create', compact('model', 'genders'));
     }
 
     public function update(UserRequest $request, $id)
@@ -53,7 +57,7 @@ class UserController extends Controller
         $model = User::findOrFail($id);
         $oldValue = $model->toArray();
 
-        $data = $request->only(['firstname', 'lastname', 'email']);
+        $data = $request->only(['firstname', 'lastname', 'email', 'gender']);
         if ($request->filled('password')) {
             $data['password'] = bcrypt($request['password']);
         }

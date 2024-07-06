@@ -18,7 +18,7 @@ class HomeController extends Controller
         if ($user->isAdmin() || $user->isManager()) {
             return redirect()->route('users.index');
         }  elseif ($user->isUser()) {
-            return redirect()->route('user.loyalty');
+            return redirect()->route('loyalty');
         }
 
         return redirect('/login');

@@ -36,13 +36,18 @@ class User extends Authenticatable
     public const ROLE_MANAGER = 'manager';
     public const ROLE_USER = 'user';
 
+    public const GENDERS = [
+        'man' => 'Мужчина',
+        'woman' => 'Женщина',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'email', 'password', 'firstname','lastname','roles', 'level_id',
+        'email', 'password', 'firstname','lastname','roles', 'level_id', 'gender'
     ];
 
     /**
